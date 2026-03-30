@@ -1,19 +1,21 @@
 import { useState } from 'react'
 
-// 스테이지별 이미지 매핑
+import img1 from '../assets/images/stage1_human.png'
+import img2a from '../assets/images/stage2_audio_log.png'
+import img2b from '../assets/images/stage2_audio_map.png'
+import img3 from '../assets/images/stage3_memory.png'
+import img4a from '../assets/images/stage4_truth_a.png'
+import img4b from '../assets/images/stage4_truth_b.png'
+import img5 from '../assets/images/stage5_core.png'
+import img6 from '../assets/images/stage6_final.png'
+
 const IMAGE_MAP = {
-  1: [new URL('../assets/images/1번째문재.png', import.meta.url).href],
-  2: [
-    new URL('../assets/images/2번째문제1.png', import.meta.url).href,
-    new URL('../assets/images/2번째문제2(지도).png', import.meta.url).href,
-  ],
-  3: [new URL('../assets/images/3번째문제.png', import.meta.url).href],
-  4: [
-    new URL('../assets/images/4번째문제 1.png', import.meta.url).href,
-    new URL('../assets/images/4번째문제 2.png', import.meta.url).href,
-  ],
-  5: [new URL('../assets/images/5번째문제.png', import.meta.url).href],
-  6: [new URL('../assets/images/6번째 마지막문제.png', import.meta.url).href],
+  1: [img1],
+  2: [img2a, img2b],
+  3: [img3],
+  4: [img4a, img4b],
+  5: [img5],
+  6: [img6],
 }
 
 export default function PuzzleViewer({ stage }) {
@@ -50,7 +52,7 @@ export default function PuzzleViewer({ stage }) {
           src={images[activeTab]}
           alt={`Stage ${stage.id} puzzle`}
           className="w-full h-auto object-contain"
-          style={{ maxHeight: '55vh' }}
+          style={{ maxHeight: '75vh' }}
         />
         <div className="absolute bottom-2 right-2 mono text-xs px-2 py-0.5 rounded"
           style={{ background: 'rgba(10,14,26,0.8)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
