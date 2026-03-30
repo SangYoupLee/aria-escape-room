@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #0d1221;
+  --bg-card: #111827;
+  --cyan: #00e5ff;
+  --cyan-dim: #00b8d4;
+  --orange: #ff6b35;
+  --text-primary: #e0f7fa;
+  --text-secondary: #78909c;
+  --border: #1e3a4a;
+  --grid-line: rgba(0, 229, 255, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+@keyframes scanline {
+  0% { top: -2px; }
+  100% { top: 100vh; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes unlock {
+  0% { opacity: 0; transform: scale(0.85); }
+  60% { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(1px, -2px); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: var(--cyan);
+  margin-left: 2px;
+}
+
+.glow { text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan); }
+.glow-border { box-shadow: 0 0 0 1px var(--cyan), 0 0 12px rgba(0,229,255,0.2); }
+
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+.unlock-anim { animation: unlock 0.5s ease forwards; }
+.glitch { animation: glitch 0.3s ease; }
+
+input[type="text"] {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cyan);
+  font-family: 'JetBrains Mono', monospace;
+  width: 100%;
+  letter-spacing: 0.1em;
+}
+input[type="text"]::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.4;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
