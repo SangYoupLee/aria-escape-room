@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Stage1Human from './stages/Stage1Human'
+import Stage6Final from './stages/Stage6Final'
 
 import img1 from '../assets/images/stage1_human.png'
 import img2a from '../assets/images/stage2_audio_log.png'
@@ -22,6 +23,7 @@ const IMAGE_MAP = {
 // 웹 컴포넌트가 완성된 스테이지 목록
 const WEB_COMPONENTS = {
   1: Stage1Human,
+  6: Stage6Final,
 }
 
 export default function PuzzleViewer({ stage }) {
