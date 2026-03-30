@@ -136,14 +136,15 @@ export default function Stage1Human() {
                       }}>
                       {day && (
                         <>
-                          {/* 날짜 숫자 */}
-                          <span className="mono" style={{ fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1 }}>
+                          {/* 날짜 숫자 — 상단 좌측 */}
+                          <span className="absolute top-1 left-1.5 mono"
+                            style={{ fontSize: '10px', color: 'var(--text-secondary)', lineHeight: 1 }}>
                             {day}
                           </span>
 
-                          {/* 자동 기록 — 파란 점 */}
+                          {/* 자동 기록 — 파란 점 (하단 중앙) */}
                           {isAuto && (
-                            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full"
+                            <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 rounded-full"
                               style={{ width: '5px', height: '5px', background: '#3b82f6' }} />
                           )}
 
@@ -153,17 +154,10 @@ export default function Stage1Human() {
                               style={{ border: '2px solid #ef4444' }} />
                           )}
 
-                          {/* 순서 번호 — 우하단, 충분히 크게 */}
+                          {/* 순서 번호 — 셀 중앙, 크게 */}
                           {order && (
-                            <span
-                              className="absolute mono font-bold"
-                              style={{
-                                bottom: '3px',
-                                right: '4px',
-                                fontSize: '11px',
-                                lineHeight: 1,
-                                color: '#ef4444',
-                              }}>
+                            <span className="mono font-bold"
+                              style={{ fontSize: '16px', color: '#ef4444', lineHeight: 1 }}>
                               {order}
                             </span>
                           )}
