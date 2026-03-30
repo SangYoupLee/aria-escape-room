@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Stage1Human from './stages/Stage1Human'
 
 import img1 from '../assets/images/stage1_human.png'
 import img2a from '../assets/images/stage2_audio_log.png'
@@ -18,9 +19,24 @@ const IMAGE_MAP = {
   6: [img6],
 }
 
+// 웹 컴포넌트가 완성된 스테이지 목록
+const WEB_COMPONENTS = {
+  1: Stage1Human,
+}
+
 export default function PuzzleViewer({ stage }) {
   const [activeTab, setActiveTab] = useState(0)
   const [zoomed, setZoomed] = useState(false)
+
+  // 웹 컴포넌트가 있으면 컴포넌트 렌더링, 없으면 이미지
+  const WebComponent = WEB_COMPONENTS[stage.id]
+  if (WebComponent) {
+    return (
+      <div className="w-full flex-1">
+        <WebComponent />
+      </div>
+    )
+  }
 
   const images = IMAGE_MAP[stage.id] ?? []
   const tabs = stage.imageTabs ?? null
