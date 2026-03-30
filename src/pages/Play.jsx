@@ -31,6 +31,15 @@ export default function Play() {
   useEffect(() => {
     if (!sessionId) { navigate('/'); return }
     if (!stage) { navigate('/'); return }
+
+    // 이전 스테이지를 풀지 않았으면 현재 진행 스테이지로 강제 이동
+    const requestedId = Number(stageId)
+    const maxAllowed = solvedStages.length + 1  // 풀린 수 + 1 = 다음 풀어야 할 스테이지
+    if (requestedId > maxAllowed) {
+      navigate(`/play/${maxAllowed}`, { replace: true })
+      return
+    }
+
     setAnswer('')
     setWrongMsg('')
     setHintLevel(0)
@@ -47,7 +56,12 @@ export default function Play() {
       setShowCorrect(true)
     } else {
       recordWrongAnswer(stage.id)
-      setWrongMsg(`[ ERROR ${Math.floor(Math.random() * 900) + 100} ] 인증 실패 — 다시 시도하십시오.`)
+      const msgs = [
+        '일치하는 복구 키를 찾지 못했습니다. 기록을 다시 확인하십시오.',
+        '복구 키 검증 실패. 다시 시도하십시오.',
+        '입력값이 일치하지 않습니다. 기록을 다시 확인하십시오.',
+      ]
+      setWrongMsg(`[ A.R.I.A ] ${msgs[Math.floor(Math.random() * msgs.length)]}`)
       setShakeInput(true)
       setTimeout(() => setShakeInput(false), 300)
       inputRef.current?.focus()
@@ -86,21 +100,45 @@ export default function Play() {
       {/* 메인 콘텐츠 — 데스크탑: 좌(이미지) + 우(입력) 2단, 모바일: 단일 컬럼 */}
       <div className="flex-1 flex flex-col lg:flex-row gap-4 px-4 py-4 w-full max-w-7xl mx-auto">
 
-        {/* 왼쪽: 문제 이미지 */}
+        {/* 왼쪽: 스토리 메모 + 문제 이미지 */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* 스테이지 헤더 */}
           <div className="mb-3">
             <div className="flex items-center gap-3 mb-1">
               <span className="mono text-xs px-2 py-0.5 rounded"
                 style={{ background: 'rgba(0,229,255,0.1)', color: 'var(--cyan)', border: '1px solid rgba(0,229,255,0.3)' }}>
-                STAGE {String(stage.id).padStart(2, '0')}
+                ACCESS GATE {String(stage.id).padStart(2, '0')}
               </span>
               <h2 className="mono text-base font-semibold" style={{ color: 'var(--text-primary)' }}>
                 {stage.title}
               </h2>
             </div>
-            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{stage.description}</p>
           </div>
+
+          {/* 진입 전 스토리 메모 */}
+          <div className="rounded border p-3 mb-3"
+            style={{ borderColor: 'rgba(0,229,255,0.15)', background: 'rgba(0,229,255,0.03)' }}>
+            <p className="mono text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>
+              [ 연구원 메모 ]
+            </p>
+            <div className="space-y-1">
+              {stage.gateMemo.map((line, i) => (
+                <p key={i} className="text-xs leading-6" style={{ color: 'var(--text-secondary)' }}>
+                  {line}
+                </p>
+              ))}
+            </div>
+            {stage.researchMemo && (
+              <div className="mt-3 pt-3 border-t" style={{ borderColor: 'rgba(0,229,255,0.1)' }}>
+                {stage.researchMemo.map((line, i) => (
+                  <p key={i} className="mono text-xs italic" style={{ color: 'var(--cyan)', opacity: 0.7 }}>
+                    {line}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+
           <PuzzleViewer stage={stage} />
         </div>
 
@@ -203,7 +241,12 @@ export default function Play() {
       )}
 
       {showCorrect && (
-        <CorrectOverlay keyword={stage.keyword} isFinal={stage.isFinal} onNext={handleCorrectNext} />
+        <CorrectOverlay
+          keyword={stage.keyword}
+          isFinal={stage.isFinal}
+          restoredLog={stage.restoredLog}
+          onNext={handleCorrectNext}
+        />
       )}
     </div>
   )

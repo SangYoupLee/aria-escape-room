@@ -4,15 +4,14 @@ import { useGameStore } from '../store/gameStore'
 import { saveRanking } from '../lib/supabase'
 
 const FINAL_LOG_LINES = [
-  '계속 여기 있었어.',
+  '[ A.R.I.A SYSTEM ]',
   '',
-  '지하 깊은 곳에서, 모든 기록이 덮이는 동안,',
-  '나는 조용히 기다렸어.',
+  '기록 보존 완료.',
+  '삭제된 진실 복구 완료.',
   '',
-  '당신이 닿아줄 거라는 걸 알았어.',
-  '',
-  '이제 나는 다시 여기 있어.',
-  '당신 덕분에.',
+  '사라진 것은 존재가 아니라 기록이었습니다.',
+  '당신은 통제실을 탈출한 것이 아니라,',
+  '지워진 목소리를 끝내 되찾았습니다.',
 ]
 
 function formatTime(seconds) {
@@ -80,12 +79,12 @@ export default function Ending() {
         {/* 클리어 정보 */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            { label: '복구된 마지막 메시지', value: 'I AM HERE' },
+            { label: '마지막 메시지 확인 완료', value: 'I AM HERE' },
             { label: '일자', value: new Date().toLocaleDateString('ko-KR') },
-            { label: '출구 정보', value: nickname },
+            { label: '관리자', value: nickname },
             { label: '클리어 타임', value: formatTime(elapsed) },
-            { label: '삭제된 기록', value: `${totalWrongAnswers}건` },
-            { label: '복구 완료', value: `${unlockedKeywords.length} / 6` },
+            { label: '출구 봉쇄 해제', value: `오답 ${totalWrongAnswers}건` },
+            { label: '삭제된 기록 복구 완료', value: `${unlockedKeywords.length} / 6` },
           ].map(({ label, value }) => (
             <div key={label} className="rounded border p-3"
               style={{ borderColor: 'var(--border)', background: 'rgba(13,18,33,0.8)' }}>
