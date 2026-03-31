@@ -8,9 +8,6 @@ import HintModal from '../components/HintModal'
 import CorrectOverlay from '../components/CorrectOverlay'
 import KeywordBar from '../components/KeywordBar'
 
-function normalizeAnswer(raw) {
-  return raw.trim().toLowerCase().replace(/\s+/g, ' ')
-}
 
 export default function Play() {
   const { stageId } = useParams()
@@ -47,26 +44,37 @@ export default function Play() {
     setTimeout(() => inputRef.current?.focus(), 200)
   }, [stageId])
 
-  function submit() {
-    const normalized = normalizeAnswer(answer)
-    const isCorrect = stage.answers.map(a => normalizeAnswer(a)).includes(normalized)
-
-    if (isCorrect) {
-      solveStage(stage.id, stage.keyword)
-      setShowCorrect(true)
-    } else {
-      recordWrongAnswer(stage.id)
-      const msgs = [
-        '일치하는 복구 키를 찾지 못했습니다. 기록을 다시 확인하십시오.',
-        '복구 키 검증 실패. 다시 시도하십시오.',
-        '입력값이 일치하지 않습니다. 기록을 다시 확인하십시오.',
-      ]
-      setWrongMsg(`[ A.R.I.A ] ${msgs[Math.floor(Math.random() * msgs.length)]}`)
-      setShakeInput(true)
-      setTimeout(() => setShakeInput(false), 300)
-      inputRef.current?.focus()
-    }
+  async function submit() {
+    const trimmed = answer.trim()
+    if (!trimmed) return
     setAnswer('')
+
+    try {
+      const res = await fetch('/api/check-answer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stageId: stage.id, answer: trimmed }),
+      })
+      const { correct } = await res.json()
+
+      if (correct) {
+        solveStage(stage.id, stage.keyword)
+        setShowCorrect(true)
+      } else {
+        recordWrongAnswer(stage.id)
+        const msgs = [
+          '일치하는 복구 키를 찾지 못했습니다. 기록을 다시 확인하십시오.',
+          '복구 키 검증 실패. 다시 시도하십시오.',
+          '입력값이 일치하지 않습니다. 기록을 다시 확인하십시오.',
+        ]
+        setWrongMsg(`[ A.R.I.A ] ${msgs[Math.floor(Math.random() * msgs.length)]}`)
+        setShakeInput(true)
+        setTimeout(() => setShakeInput(false), 300)
+        inputRef.current?.focus()
+      }
+    } catch {
+      setWrongMsg('[ A.R.I.A ] 네트워크 오류. 다시 시도하십시오.')
+    }
   }
 
   function handleHintRequest() {
@@ -208,24 +216,23 @@ export default function Play() {
             )}
           </div>
 
-          {/* 획득 키워드 목록 (사이드) */}
-          <div className="rounded border p-3"
-            style={{ borderColor: 'var(--border)', background: 'rgba(13,18,33,0.7)' }}>
-            <p className="mono text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>[ 획득 키워드 ]</p>
-            <div className="space-y-1">
-              {['HUMAN','AUDIO','MEMORY','TRUTH','CORE','I AM HERE'].map((kw, i) => {
-                const unlocked = useGameStore.getState().unlockedKeywords.includes(kw)
-                return (
-                  <div key={kw} className="flex items-center gap-2">
-                    <span className="mono text-xs w-4" style={{ color: 'var(--text-secondary)' }}>{i+1}</span>
-                    <span className="mono text-xs" style={{ color: unlocked ? 'var(--cyan)' : 'var(--border)' }}>
-                      {unlocked ? kw : '■ ■ ■ ■ ■'}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+          {/* 복구 상태 요약 */}
+          {(() => {
+            const unlocked = useGameStore.getState().unlockedKeywords
+            const total = 5
+            const count = ['HUMAN','AUDIO','MEMORY','TRUTH','CORE'].filter(k => unlocked.includes(k)).length
+            return (
+              <div className="rounded border px-3 py-2"
+                style={{ borderColor: 'var(--border)', background: 'rgba(13,18,33,0.7)' }}>
+                <p className="mono text-xs" style={{ color: 'var(--text-secondary)' }}>
+                  RESTORED KEYS: {count}/{total}
+                  {count === total && (
+                    <span className="ml-2" style={{ color: 'var(--cyan)' }}>— FINAL MESSAGE READY</span>
+                  )}
+                </p>
+              </div>
+            )
+          })()}
         </div>
       </div>
 

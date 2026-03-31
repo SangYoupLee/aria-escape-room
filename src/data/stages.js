@@ -4,8 +4,7 @@ export const STAGES = [
     keyword: 'HUMAN',
     title: '관리자 인증',
     subtitle: 'CALENDAR RECORD',
-    status: 'HUMAN AUTH LOCKED',
-    answers: ['human', 'HUMAN'],
+    status: 'AUTH LOCKED',
 
     // 진입 전 문구 (ACCESS GATE)
     gateMemo: [
@@ -39,8 +38,6 @@ export const STAGES = [
     title: '이동기록 복원',
     subtitle: 'TRACE RECONSTRUCTION',
     status: 'PARTIAL AUTH',
-    answers: ['audio', 'AUDIO'],
-
     gateMemo: [
       '격리 직전, 통제실 내부 이동 기록 일부가 복구되었습니다.',
       '누군가는 봉쇄가 시작된 뒤에도 계속 움직이고 있었습니다.',
@@ -70,8 +67,6 @@ export const STAGES = [
     title: '음성기록 복구',
     subtitle: 'PACKET CHAIN RESTORE',
     status: 'AUDIO ACCESS',
-    answers: ['memory', 'MEMORY'],
-
     gateMemo: [
       '손상된 음성기록 일부가 다시 연결됩니다.',
       '하지만 모든 조각이 진짜는 아닙니다.',
@@ -101,8 +96,6 @@ export const STAGES = [
     title: '삭제된 기억 중첩',
     subtitle: 'MEMORY CACHE OVERLAY',
     status: 'MEMORY RESTORED',
-    answers: ['truth', 'TRUTH'],
-
     gateMemo: [
       '기억 캐시 일부가 복구됐습니다.',
       '남아 있는 것은 완전한 기록이 아니라,',
@@ -133,8 +126,6 @@ export const STAGES = [
     title: '권한 버스 후보 판독',
     subtitle: 'SLOT SLICE ROUTER',
     status: 'TRUTH UNLOCKED',
-    answers: ['core', 'CORE'],
-
     gateMemo: [
       '코어 권한 라우팅 일부가 열렸습니다.',
       '이제 남은 건 출구가 아니라 중심부입니다.',
@@ -164,7 +155,6 @@ export const STAGES = [
     title: '최종 메시지 복원',
     subtitle: 'FINAL MESSAGE RESTORE',
     status: 'CORE RESTORED',
-    answers: ['i am here', 'IAMHERE', 'iamhere', 'I AM HERE'],
     isFinal: true,
 
     gateMemo: [

@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import Stage1Human from './stages/Stage1Human'
+import Stage2Audio from './stages/Stage2Audio'
+import Stage3Memory from './stages/Stage3Memory'
+import Stage4Truth from './stages/Stage4Truth'
+import Stage5Core from './stages/Stage5Core'
 import Stage6Final from './stages/Stage6Final'
 
 import img1 from '../assets/images/stage1_human.png'
@@ -23,6 +27,10 @@ const IMAGE_MAP = {
 // 웹 컴포넌트가 완성된 스테이지 목록
 const WEB_COMPONENTS = {
   1: Stage1Human,
+  2: Stage2Audio,
+  3: Stage3Memory,
+  4: Stage4Truth,
+  5: Stage5Core,
   6: Stage6Final,
 }
 

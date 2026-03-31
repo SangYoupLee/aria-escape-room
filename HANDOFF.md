@@ -76,7 +76,11 @@ src/
 ```js
 const WEB_COMPONENTS = {
   1: Stage1Human,   // ✅ 완성
-  // 2~6 미완성 → 이미지 fallback 사용 중
+  2: Stage2Audio,   // ✅ 완성
+  3: Stage3Memory,  // ✅ 완성
+  4: Stage4Truth,   // ✅ 완성
+  5: Stage5Core,    // ✅ 완성
+  6: Stage6Final,   // ✅ 완성
 }
 ```
 
@@ -85,11 +89,11 @@ const WEB_COMPONENTS = {
 | Stage | 정답 | 난이도 | 메모 |
 |---|---|---|---|
 | 1 HUMAN | ✅ 완성 | 낮음 | CSS 달력, 완료 |
-| 6 I AM HERE | 다음 추천 | 낮음 | 단순 그리드, 빠르게 가능 |
-| 4 TRUTH | 3번째 추천 | 중간 | 레이어 A/B 토글, 오히려 웹이 더 효과적 |
-| 2 AUDIO | 4번째 | 중간 | 로그 테이블 + SVG 지도 필요 |
-| 3 MEMORY | 5번째 | 높음 | 카드 7개 + 반전 효과 |
-| 5 CORE | 마지막 | 높음 | 슬롯 3분할 복잡 |
+| 6 I AM HERE | ✅ 완성 | 낮음 | 글자 추출 그리드 |
+| 4 TRUTH | ✅ 완성 | 중간 | Layer A/B 토글 SVG, 웹이 더 효과적 |
+| 2 AUDIO | ✅ 완성 | 중간 | 로그 테이블 + SVG 노드맵 |
+| 3 MEMORY | ✅ 완성 | 높음 | 클립 7개 + 반전/가짜 구분 |
+| 5 CORE | ✅ 완성 | 높음 | 7-segment 4BUS + 필터 규칙 |
 
 ---
 
@@ -156,8 +160,9 @@ git push
 
 ### 웹 컴포넌트 전환
 - [x] Stage 1 HUMAN — 달력
-- [ ] Stage 6 I AM HERE — 글자 추출 그리드 (다음 추천)
-- [ ] Stage 4 TRUTH — 레이어 A/B 오버레이
+- [x] Stage 6 I AM HERE — 글자 추출 그리드
+- [x] Stage 4 TRUTH — Layer A/B 토글 SVG 오버레이
+- [x] Stage 2 AUDIO — 로그 테이블 + SVG 노드맵
 - [ ] Stage 2 AUDIO — 로그 테이블 + 지도
 - [ ] Stage 3 MEMORY — 패킷 카드
 - [ ] Stage 5 CORE — 슬롯 조각
@@ -175,6 +180,6 @@ git push
 ```
 c:/dev/escaperoom 에서 A.R.I.A 방탈출 웹앱 개발 중.
 HANDOFF.md 파일 읽어줘. 거기서 이어서 작업할게.
-현재 feature/web-components 브랜치, Stage 1 웹 컴포넌트 완성.
-다음은 Stage 6 웹 컴포넌트 또는 Vercel 배포.
+현재 feature/web-components 브랜치, 전 스테이지(1~6) 웹 컴포넌트 완성.
+다음은 Vercel 배포.
 ```
