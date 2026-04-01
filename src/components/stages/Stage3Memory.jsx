@@ -1,4 +1,5 @@
 // Stage 3 — MEMORY : 손상된 음성기록 복구
+import { useState } from 'react'
 // 파형 절단면 매칭 퍼즐: 클립의 우측 절단면과 다음 클립의 좌측 절단면을 맞추어 연결
 // 올바른 순서: A → D → F(역방향) → G → E(역방향) → B = MEMORY
 // 가짜 클립: C (절단면 X1→X2, 어디에도 연결되지 않음)
@@ -198,6 +199,8 @@ function ClipCard({ clip }) {
 }
 
 export default function Stage3Memory() {
+  const [memoOpen, setMemoOpen] = useState(false)
+
   return (
     <div className="w-full rounded border overflow-hidden"
       style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }}>
@@ -206,7 +209,7 @@ export default function Stage3Memory() {
       <div className="flex justify-between items-center px-3 py-2 border-b"
         style={{ borderColor: 'var(--border)' }}>
         <span className="mono text-xs" style={{ color: 'var(--cyan)' }}>
-          A.R.I.A SYSTEM / PACKET CHAIN RESTORE vFINAL-4
+          A.R.I.A SYSTEM / PACKET CHAIN RESTORE
         </span>
         <span className="mono text-xs" style={{ color: 'var(--cyan)' }}>
           STATUS: AUDIO ACCESS
@@ -215,47 +218,57 @@ export default function Stage3Memory() {
 
       <div className="flex flex-col md:flex-row">
 
-        {/* 좌측 패널 */}
-        <div className="md:w-52 flex-shrink-0 p-3 flex flex-col gap-3
-                        border-b md:border-b-0 md:border-r"
+        {/* 좌측 패널 — 모바일 토글 */}
+        <div className="md:w-52 flex-shrink-0 border-b md:border-b-0 md:border-r"
           style={{ borderColor: 'var(--border)' }}>
 
-          {/* 체인 시작/끝 — 서명 미리보기 */}
-          <div className="flex gap-2">
-            {[
-              { label: 'CHAIN START', sig: 'ST' },
-              { label: 'CHAIN END',   sig: 'ED' },
-            ].map(({ label, sig }) => (
-              <div key={label} className="flex-1 rounded border p-2"
-                style={{ borderColor: 'var(--border)', background: 'rgba(0,0,0,0.25)' }}>
-                <p className="mono mb-1.5" style={{ fontSize: '8px', color: 'var(--cyan)' }}>{label}</p>
-                <SigBarSmall sigKey={sig} />
-                <p className="mono mt-1" style={{ fontSize: '7px', color: 'var(--text-secondary)', opacity: 0.6 }}>{label === 'CHAIN START' ? 'START' : 'END'}</p>
-              </div>
-            ))}
-          </div>
+          <button
+            className="md:hidden w-full flex justify-between items-center px-3 py-2 mono text-xs"
+            style={{ color: 'var(--cyan)' }}
+            onClick={() => setMemoOpen(v => !v)}
+          >
+            <span>[ 체인 정보 / 메모 ]</span>
+            <span>{memoOpen ? '▲' : '▼'}</span>
+          </button>
 
-          {/* 연구원 메모 */}
-          <div className="rounded border p-3"
-            style={{ borderColor: 'var(--border)', background: 'rgba(0,0,0,0.25)' }}>
-            <p className="mono text-sm mb-2" style={{ color: 'var(--cyan)' }}>[ 연구원 메모 ]</p>
-            <p className="text-sm leading-7" style={{ color: 'var(--text-secondary)' }}>
-              잘린 곳은 흔적을 남긴다.<br />
-              어떤 건 거꾸로 잘렸다.
-            </p>
+          <div className={`p-3 flex flex-col gap-3 ${memoOpen ? 'block' : 'hidden'} md:block`}>
+            {/* 체인 시작/끝 — 서명 미리보기 */}
+            <div className="flex gap-2">
+              {[
+                { label: 'CHAIN START', sig: 'ST' },
+                { label: 'CHAIN END',   sig: 'ED' },
+              ].map(({ label, sig }) => (
+                <div key={label} className="flex-1 rounded border p-2"
+                  style={{ borderColor: 'var(--border)', background: 'rgba(0,0,0,0.25)' }}>
+                  <p className="mono mb-1.5" style={{ fontSize: '8px', color: 'var(--cyan)' }}>{label}</p>
+                  <SigBarSmall sigKey={sig} />
+                  <p className="mono mt-1" style={{ fontSize: '7px', color: 'var(--text-secondary)', opacity: 0.6 }}>{label === 'CHAIN START' ? 'START' : 'END'}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* 연구원 메모 */}
+            <div className="rounded border p-3"
+              style={{ borderColor: 'var(--border)', background: 'rgba(0,0,0,0.25)' }}>
+              <p className="mono text-sm mb-2" style={{ color: 'var(--cyan)' }}>[ 연구원 메모 ]</p>
+              <p className="text-sm leading-7" style={{ color: 'var(--text-secondary)' }}>
+                잘린 곳은 흔적을 남긴다.<br />
+                어떤 건 거꾸로 잘렸다.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* 클립 그리드 */}
+        {/* 클립 그리드 — 모바일 1열, 데스크탑 2열 */}
         <div className="flex-1 p-3 min-w-0">
           <p className="mono text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
             손상된 음성기록 복구
           </p>
-          <p className="mono text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>
+          <p className="mono text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
             절단면을 맞추어 클립을 순서대로 연결하라.
           </p>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {CLIPS.map((clip) => (
               <ClipCard key={clip.id} clip={clip} />
             ))}

@@ -71,50 +71,66 @@ export default function Stage6Final() {
         <div className="space-y-2">
           {STAGE_ROWS.map((row) => (
             <div key={row.id}
-              className="flex items-center gap-3 rounded border px-3 py-2"
+              className="rounded border px-3 py-2"
               style={{ borderColor: 'var(--border)', background: 'rgba(0,0,0,0.15)' }}>
 
-              <div className="flex-shrink-0 w-28">
-                <span className="mono text-sm block font-semibold" style={{ color: 'var(--cyan)' }}>
-                  STAGE-{row.id}
-                </span>
-                <span className="mono text-xs" style={{ color: 'var(--text-secondary)' }}>
-                  {row.label}
-                </span>
+              {/* 라벨: 모바일 위쪽, 데스크탑 인라인 */}
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0 w-24 hidden sm:block">
+                  <span className="mono text-sm block font-semibold" style={{ color: 'var(--cyan)' }}>
+                    STAGE-{row.id}
+                  </span>
+                  <span className="mono text-xs" style={{ color: 'var(--text-secondary)' }}>
+                    {row.label}
+                  </span>
+                </div>
+
+                <div className="sm:hidden mb-1 w-full">
+                  <span className="mono text-xs font-semibold" style={{ color: 'var(--cyan)' }}>
+                    STAGE-{row.id}
+                  </span>
+                  <span className="mono text-xs ml-2" style={{ color: 'var(--text-secondary)' }}>
+                    {row.label}
+                  </span>
+                </div>
               </div>
 
-              <div className="flex gap-1.5 flex-1">
-                {row.letters.map((_, idx) => {
-                  const pos = idx + 1
-                  const orderNum = row.highlights[pos]
-                  const isHighlighted = !!orderNum
-                  return (
-                    <div key={idx}
-                      className="relative flex items-center justify-center rounded flex-1"
-                      style={{
-                        aspectRatio: '1',
-                        minWidth: '34px',
-                        maxWidth: '52px',
-                        border: isHighlighted
-                          ? '2px solid var(--orange)'
-                          : '1px solid var(--border)',
-                        background: isHighlighted
-                          ? 'rgba(255,107,53,0.1)'
-                          : 'rgba(0,0,0,0.2)',
-                      }}>
-                      <span className="absolute bottom-0.5 left-0 right-0 text-center mono"
-                        style={{ fontSize: '9px', color: 'var(--text-secondary)', opacity: 0.5 }}>
-                        {pos}
-                      </span>
-                      {isHighlighted && (
-                        <span className="mono font-bold"
-                          style={{ fontSize: '17px', color: 'var(--orange)', lineHeight: 1 }}>
-                          {orderNum}
+              <div className="flex gap-1.5">
+                {/* 데스크탑 spacer */}
+                <div className="flex-shrink-0 w-24 hidden sm:block" />
+                <div className="flex gap-1.5 flex-1">
+                  {row.letters.map((_, idx) => {
+                    const pos = idx + 1
+                    const orderNum = row.highlights[pos]
+                    const isHighlighted = !!orderNum
+                    return (
+                      <div key={idx}
+                        className="relative flex items-center justify-center rounded flex-1"
+                        style={{
+                          aspectRatio: '1',
+                          minWidth: '28px',
+                          maxWidth: '52px',
+                          border: isHighlighted
+                            ? '2px solid var(--orange)'
+                            : '1px solid var(--border)',
+                          background: isHighlighted
+                            ? 'rgba(255,107,53,0.1)'
+                            : 'rgba(0,0,0,0.2)',
+                        }}>
+                        <span className="absolute bottom-0.5 left-0 right-0 text-center mono"
+                          style={{ fontSize: '8px', color: 'var(--text-secondary)', opacity: 0.5 }}>
+                          {pos}
                         </span>
-                      )}
-                    </div>
-                  )
-                })}
+                        {isHighlighted && (
+                          <span className="mono font-bold"
+                            style={{ fontSize: '15px', color: 'var(--orange)', lineHeight: 1 }}>
+                            {orderNum}
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           ))}

@@ -75,6 +75,11 @@ function CacheGrid({ cache, showA, showB }) {
   )
 }
 
+const LAYER_OPTIONS = [
+  { key: 'a', label: 'LAYER A', color: '#00e5ff' },
+  { key: 'b', label: 'LAYER B', color: '#d946ef' },
+]
+
 export default function Stage4Truth() {
   const [activeLayer, setActiveLayer] = useState('a')
   const showA = activeLayer === 'a'
@@ -94,10 +99,25 @@ export default function Stage4Truth() {
         </span>
       </div>
 
+      {/* 모바일 레이어 탭 */}
+      <div className="md:hidden flex gap-2 px-3 py-2 border-b" style={{ borderColor: 'var(--border)' }}>
+        {LAYER_OPTIONS.map(({ key, label, color }) => (
+          <button key={key} onClick={() => setActiveLayer(key)}
+            className="flex-1 mono text-sm py-2 rounded transition-colors"
+            style={{
+              border: `1px solid ${activeLayer === key ? color : 'var(--border)'}`,
+              color: activeLayer === key ? color : 'var(--text-secondary)',
+              background: activeLayer === key ? `color-mix(in srgb, ${color} 8%, transparent)` : 'transparent',
+            }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
       <div className="flex flex-col md:flex-row">
 
-        <div className="md:w-48 flex-shrink-0 p-3 flex flex-col gap-3
-                        border-b md:border-b-0 md:border-r"
+        <div className="md:w-48 flex-shrink-0 p-3 flex-col gap-3
+                        hidden md:flex border-r"
           style={{ borderColor: 'var(--border)' }}>
 
           <div className="rounded border p-3"
@@ -113,10 +133,7 @@ export default function Stage4Truth() {
             style={{ borderColor: 'var(--border)', background: 'rgba(0,0,0,0.25)' }}>
             <p className="mono text-sm mb-2" style={{ color: 'var(--cyan)' }}>[ LAYER CONTROL ]</p>
             <div className="flex flex-col gap-2">
-              {[
-                { key: 'a', label: 'LAYER A', color: '#00e5ff' },
-                { key: 'b', label: 'LAYER B', color: '#d946ef' },
-              ].map(({ key, label, color }) => (
+              {LAYER_OPTIONS.map(({ key, label, color }) => (
                 <button key={key}
                   onClick={() => setActiveLayer(key)}
                   className="mono text-sm px-3 py-2 rounded text-left transition-colors"

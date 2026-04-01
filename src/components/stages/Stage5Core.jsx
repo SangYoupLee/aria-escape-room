@@ -87,6 +87,26 @@ export default function Stage5Core() {
     return c ? c.word[c.letterIdx] : '_'
   })
 
+  // RECOVERED CODE 공통 렌더
+  const recoveredBar = (
+    <div className="flex gap-2 justify-center">
+      {recovered.map((ch, i) => (
+        <div key={i}
+          className="w-10 h-10 flex items-center justify-center rounded border"
+          style={{
+            borderColor: ch !== '_' ? 'var(--cyan)' : 'var(--border)',
+            background:  ch !== '_' ? 'rgba(0,229,255,0.1)' : 'rgba(0,0,0,0.3)',
+            boxShadow:   ch !== '_' ? '0 0 8px rgba(0,229,255,0.3)' : 'none',
+          }}>
+          <span className="mono font-bold text-lg"
+            style={{ color: ch !== '_' ? 'var(--cyan)' : 'var(--text-secondary)', opacity: ch !== '_' ? 1 : 0.3 }}>
+            {ch}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+
   return (
     <div className="w-full rounded border overflow-hidden"
       style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }}>
@@ -102,11 +122,17 @@ export default function Stage5Core() {
         </span>
       </div>
 
+      {/* 모바일 상단: RECOVERED CODE 항상 표시 */}
+      <div className="md:hidden flex items-center gap-3 px-3 py-2 border-b"
+        style={{ borderColor: 'var(--border)', background: 'rgba(0,229,255,0.03)' }}>
+        <span className="mono text-xs flex-shrink-0" style={{ color: 'var(--cyan)' }}>CODE</span>
+        {recoveredBar}
+      </div>
+
       <div className="flex flex-col md:flex-row">
 
-        {/* 좌측 패널 */}
-        <div className="md:w-52 flex-shrink-0 p-3 flex flex-col gap-3
-                        border-b md:border-b-0 md:border-r"
+        {/* 좌측 패널 — 데스크탑만 */}
+        <div className="md:w-52 flex-shrink-0 p-3 hidden md:flex flex-col gap-3 border-r"
           style={{ borderColor: 'var(--border)' }}>
 
           <div className="rounded border p-3"
@@ -133,22 +159,7 @@ export default function Stage5Core() {
           <div className="rounded border p-3"
             style={{ borderColor: 'rgba(0,229,255,0.3)', background: 'rgba(0,229,255,0.03)' }}>
             <p className="mono text-xs mb-3" style={{ color: 'var(--cyan)' }}>[ RECOVERED CODE ]</p>
-            <div className="flex gap-2 justify-center">
-              {recovered.map((ch, i) => (
-                <div key={i}
-                  className="w-10 h-10 flex items-center justify-center rounded border"
-                  style={{
-                    borderColor: ch !== '_' ? 'var(--cyan)' : 'var(--border)',
-                    background:  ch !== '_' ? 'rgba(0,229,255,0.1)' : 'rgba(0,0,0,0.3)',
-                    boxShadow:   ch !== '_' ? '0 0 8px rgba(0,229,255,0.3)' : 'none',
-                  }}>
-                  <span className="mono font-bold text-lg"
-                    style={{ color: ch !== '_' ? 'var(--cyan)' : 'var(--text-secondary)', opacity: ch !== '_' ? 1 : 0.3 }}>
-                    {ch}
-                  </span>
-                </div>
-              ))}
-            </div>
+            {recoveredBar}
           </div>
         </div>
 
