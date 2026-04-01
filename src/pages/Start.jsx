@@ -117,6 +117,19 @@ export default function Start() {
               </p>
             </div>
 
+            {/* 랭킹 바로가기 */}
+            <div className="text-center">
+              <button
+                onClick={() => navigate('/ranking')}
+                className="mono text-xs transition-colors"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--cyan)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+              >
+                ADMINISTRATOR RECORDS →
+              </button>
+            </div>
+
             {/* 식별자 입력 */}
             <div className="rounded border p-4"
               style={{ borderColor: 'var(--border)', background: 'rgba(13,18,33,0.8)' }}>
