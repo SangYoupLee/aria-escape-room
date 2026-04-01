@@ -101,20 +101,17 @@ export default function Play() {
   const { unlockedKeywords } = useGameStore()
   const restoredCount = ['HUMAN','AUDIO','MEMORY','TRUTH','CORE'].filter(k => unlockedKeywords.includes(k)).length
 
-  const inputPanel = (
+  // 데스크탑용 전체 패널
+  const inputPanelDesktop = (
     <div className="flex flex-col gap-3">
-      {/* 입력 영역 */}
       <div className="rounded border p-4"
         style={{ borderColor: 'var(--border)', background: 'rgba(13,18,33,0.95)' }}>
         <p className="mono text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>
           {alreadySolved ? `[ 키워드 획득: ${stage.keyword} ]` : '[ 인증 코드 입력 ]'}
         </p>
-
         {alreadySolved ? (
           <div className="flex items-center gap-2 py-2">
-            <span className="mono text-lg font-bold glow" style={{ color: 'var(--cyan)' }}>
-              {stage.keyword}
-            </span>
+            <span className="mono text-lg font-bold glow" style={{ color: 'var(--cyan)' }}>{stage.keyword}</span>
             <span className="mono text-xs" style={{ color: 'var(--text-secondary)' }}>— 인증 완료</span>
           </div>
         ) : (
@@ -122,61 +119,70 @@ export default function Play() {
             <div className={`flex items-center gap-2 rounded border px-3 py-2 transition-all ${shakeInput ? 'glitch' : ''}`}
               style={{ borderColor: 'rgba(0,229,255,0.4)', background: 'rgba(0,229,255,0.04)' }}>
               <span className="mono text-sm" style={{ color: 'var(--cyan)' }}>&gt;</span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={answer}
+              <input ref={inputRef} type="text" value={answer}
                 onChange={(e) => { setAnswer(e.target.value); setWrongMsg('') }}
                 onKeyDown={(e) => e.key === 'Enter' && submit()}
-                placeholder="정답 입력 후 Enter"
-                className="mono flex-1"
-              />
+                placeholder="정답 입력 후 Enter" className="mono flex-1" />
             </div>
-
-            {wrongMsg && (
-              <p className="mono text-xs mt-2 fade-in" style={{ color: 'var(--orange)' }}>
-                {wrongMsg}
-              </p>
-            )}
-
+            {wrongMsg && <p className="mono text-xs mt-2 fade-in" style={{ color: 'var(--orange)' }}>{wrongMsg}</p>}
             <div className="flex gap-2 mt-3">
-              <button
-                onClick={submit}
-                className="flex-1 py-2 rounded mono text-sm font-semibold transition-colors"
+              <button onClick={submit} className="flex-1 py-2 rounded mono text-sm font-semibold transition-colors"
                 style={{ background: 'rgba(0,229,255,0.1)', border: '1px solid var(--cyan)', color: 'var(--cyan)' }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,229,255,0.2)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,229,255,0.1)'}
-              >
-                SUBMIT
-              </button>
-              <button
-                onClick={handleHintRequest}
-                className="px-4 py-2 rounded mono text-sm transition-colors"
-                style={{
-                  background: 'rgba(255,107,53,0.08)',
-                  border: '1px solid rgba(255,107,53,0.4)',
-                  color: 'var(--orange)',
-                }}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,229,255,0.1)'}>SUBMIT</button>
+              <button onClick={handleHintRequest} className="px-4 py-2 rounded mono text-sm transition-colors"
+                style={{ background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.4)', color: 'var(--orange)' }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,107,53,0.16)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,107,53,0.08)'}
-              >
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,107,53,0.08)'}>
                 HINT {hintLevel > 0 ? `(${hintLevel}/3)` : ''}
               </button>
             </div>
           </>
         )}
       </div>
-
-      {/* 복구 상태 요약 */}
       <div className="rounded border px-3 py-2"
         style={{ borderColor: 'var(--border)', background: 'rgba(13,18,33,0.7)' }}>
         <p className="mono text-xs" style={{ color: 'var(--text-secondary)' }}>
           RESTORED KEYS: {restoredCount}/5
-          {restoredCount === 5 && (
-            <span className="ml-2" style={{ color: 'var(--cyan)' }}>— FINAL MESSAGE READY</span>
-          )}
+          {restoredCount === 5 && <span className="ml-2" style={{ color: 'var(--cyan)' }}>— FINAL MESSAGE READY</span>}
         </p>
       </div>
+    </div>
+  )
+
+  // 모바일용 컴팩트 패널
+  const inputPanelMobile = (
+    <div className="flex flex-col gap-2">
+      {alreadySolved ? (
+        <div className="flex items-center gap-2">
+          <span className="mono text-base font-bold glow" style={{ color: 'var(--cyan)' }}>{stage.keyword}</span>
+          <span className="mono text-xs" style={{ color: 'var(--text-secondary)' }}>— 인증 완료</span>
+          <span className="mono text-xs ml-auto" style={{ color: 'var(--text-secondary)' }}>{restoredCount}/5</span>
+        </div>
+      ) : (
+        <>
+          <div className={`flex items-center gap-2 rounded border px-3 py-2 ${shakeInput ? 'glitch' : ''}`}
+            style={{ borderColor: 'rgba(0,229,255,0.4)', background: 'rgba(0,229,255,0.04)' }}>
+            <span className="mono text-sm" style={{ color: 'var(--cyan)' }}>&gt;</span>
+            <input ref={inputRef} type="text" value={answer}
+              onChange={(e) => { setAnswer(e.target.value); setWrongMsg('') }}
+              onKeyDown={(e) => e.key === 'Enter' && submit()}
+              placeholder="정답 입력" className="mono flex-1" />
+            <span className="mono text-xs flex-shrink-0" style={{ color: 'var(--text-secondary)' }}>{restoredCount}/5</span>
+          </div>
+          {wrongMsg && <p className="mono text-xs fade-in" style={{ color: 'var(--orange)' }}>{wrongMsg}</p>}
+          <div className="flex gap-2">
+            <button onClick={submit} className="flex-1 py-2 rounded mono text-sm font-semibold"
+              style={{ background: 'rgba(0,229,255,0.1)', border: '1px solid var(--cyan)', color: 'var(--cyan)' }}>
+              SUBMIT
+            </button>
+            <button onClick={handleHintRequest} className="px-4 py-2 rounded mono text-sm"
+              style={{ background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.4)', color: 'var(--orange)' }}>
+              HINT {hintLevel > 0 ? `(${hintLevel}/3)` : ''}
+            </button>
+          </div>
+        </>
+      )}
     </div>
   )
 
@@ -188,7 +194,7 @@ export default function Play() {
       <KeywordBar />
 
       {/* 메인 콘텐츠 — 데스크탑: 좌우 2단 / 모바일: 단일 컬럼 + 하단 고정 입력 */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-4 px-4 py-4 pb-36 lg:pb-4 w-full max-w-7xl mx-auto">
+      <div className="flex-1 flex flex-col lg:flex-row gap-4 px-4 py-4 pb-28 lg:pb-4 w-full max-w-7xl mx-auto">
 
         {/* 왼쪽: 스토리 메모 + 문제 이미지 */}
         <div className="flex-1 flex flex-col min-w-0">
@@ -234,14 +240,14 @@ export default function Play() {
 
         {/* 오른쪽: 데스크탑에서만 보이는 입력 패널 */}
         <div className="hidden lg:flex lg:w-80 flex-col gap-3">
-          {inputPanel}
+          {inputPanelDesktop}
         </div>
       </div>
 
-      {/* 모바일 하단 고정 입력 패널 */}
+      {/* 모바일 하단 고정 컴팩트 패널 */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 px-4 py-3 border-t"
         style={{ borderColor: 'var(--border)', background: 'rgba(10,14,26,0.97)', backdropFilter: 'blur(8px)' }}>
-        {inputPanel}
+        {inputPanelMobile}
       </div>
 
       {showHint && (
