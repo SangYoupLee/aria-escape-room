@@ -42,7 +42,7 @@ export default function PuzzleViewer({ stage }) {
   const WebComponent = WEB_COMPONENTS[stage.id]
   if (WebComponent) {
     return (
-      <div className="w-full flex-1">
+      <div className="w-full flex-1 pb-4">
         <WebComponent />
       </div>
     )

@@ -194,7 +194,7 @@ export default function Play() {
       <KeywordBar />
 
       {/* 메인 콘텐츠 — 데스크탑: 좌우 2단 / 모바일: 단일 컬럼 + 하단 고정 입력 */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-4 px-4 py-4 pb-28 lg:pb-4 w-full max-w-7xl mx-auto">
+      <div className="flex-1 flex flex-col lg:flex-row gap-4 px-4 py-4 pb-48 lg:pb-4 w-full max-w-7xl mx-auto">
 
         {/* 왼쪽: 스토리 메모 + 문제 이미지 */}
         <div className="flex-1 flex flex-col min-w-0">
