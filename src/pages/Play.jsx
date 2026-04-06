@@ -187,14 +187,15 @@ export default function Play() {
   )
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden">
       <StatusBar stageId={stage.id} title={stage.subtitle} status={stage.status} />
 
       {/* 획득 키워드 바 */}
       <KeywordBar />
 
-      {/* 메인 콘텐츠 — 데스크탑: 좌우 2단 / 모바일: 단일 컬럼 + 하단 고정 입력 */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-4 px-4 py-4 pb-48 lg:pb-4 w-full max-w-7xl mx-auto">
+      {/* 메인 콘텐츠 — 모바일: 독립 스크롤 / 데스크탑: 좌우 2단 */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-col lg:flex-row gap-4 px-4 py-4 pb-6 w-full max-w-7xl mx-auto">
 
         {/* 왼쪽: 스토리 메모 + 문제 이미지 */}
         <div className="flex-1 flex flex-col min-w-0">
@@ -241,6 +242,7 @@ export default function Play() {
         {/* 오른쪽: 데스크탑에서만 보이는 입력 패널 */}
         <div className="hidden lg:flex lg:w-80 flex-col gap-3">
           {inputPanelDesktop}
+        </div>
         </div>
       </div>
 
